@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CodeMind – Uczę się programować</title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <h1>CodeMind</h1>
+            <p>Mój blog programistyczny – uczę się, testuję i dokumentuję!</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <aside class="column-left" aria-label="Lista artykułów">
+            <h2>Artykuły</h2>
+            <ul class="titles"></ul>
+        </aside>
+
+        <section class="column-center">
+            <h2 class="visually-hidden">Zawartość artykułu</h2> <!-- Dodano dostępność -->
+
+            <article id="article-1" data-tags="javascript,html" data-author="Agnieszka">
+                <h3>Jak zacząć z JavaScript?</h3>
+                <p class="short">Poznaj podstawy JavaScript i napisz swój pierwszy skrypt!</p>
+                <div class="content">
+                    <p>JavaScript to język, który pozwala tworzyć dynamiczne strony. Używa się go m.in. do reagowania na
+                        kliknięcia, animacji, komunikacji z serwerem i wielu innych.</p>
+                </div>
+            </article>
+
+            <article id="article-2" data-tags="css,projekt" data-author="Agnieszka">
+                <h3>Pierwszy projekt w CSS</h3>
+                <p class="short">Stylujemy stronę przy pomocy własnych klas i zmiennych!</p>
+                <div class="content">
+                    <p>CSS to język stylów. Dzięki niemu możesz sprawić, że Twoja strona będzie wyglądać świetnie.
+                        Kolory, marginesy, układ – wszystko jest w Twoich rękach!</p>
+                </div>
+            </article>
+        </section>
+
+        <aside class="column-right" aria-label="Tagi i autorzy">
+            <h2>Tagi</h2>
+            <ul class="tags"></ul>
+
+            <h2>Autorzy</h2>
+            <ul class="authors"></ul>
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 <strong>CodeMind</strong>. Blog edukacyjny Agnieszki.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
