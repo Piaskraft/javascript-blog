@@ -1,26 +1,40 @@
 'use strict';
 
-/* 🔁 Generowanie listy tytułów artykułów */
+/* 🔧 Ustawienia konfiguracyjne */
+const optArticleSelector = '.post',
+    optTitleSelector = '.post-title',
+    optTitleListSelector = '.titles',
+    optArticleTagsSelector = '.post-tags .list',
+    optArticleTagAttribute = 'data-tags',
+    optTagsListSelector = '.tags',
+    optArticleAuthorAttribute = 'data-author',
+    optAuthorsListSelector = '.authors';
+
+/* 🏷️ GENEROWANIE LISTY TYTUŁÓW ARTYKUŁÓW */
 function generateTitleLinks() {
-    const titleList = document.querySelector('.titles');
-    const articles = document.querySelectorAll('.column-center article');
+    const titleList = document.querySelector(optTitleListSelector);
+    const articles = document.querySelectorAll(optArticleSelector);
 
     titleList.innerHTML = '';
+    let html = '';
 
     for (const article of articles) {
         const articleId = article.getAttribute('id');
-        const articleTitle = article.querySelector('h3').innerText;
+        const articleTitle = article.querySelector(optTitleSelector).innerText;
+
         const linkHTML = `<li><a href="#${articleId}">${articleTitle}</a></li>`;
-        titleList.innerHTML += linkHTML;
+        html += linkHTML;
     }
 
-    const links = document.querySelectorAll('.titles a');
+    titleList.innerHTML = html;
+
+    const links = titleList.querySelectorAll('a');
     for (const link of links) {
         link.addEventListener('click', titleClickHandler);
     }
 }
 
-/* 📎 Obsługa kliknięcia tytułu */
+/* 🔘 OBSŁUGA KLIKNIĘCIA W TYTUŁ ARTYKUŁU */
 function titleClickHandler(event) {
     event.preventDefault();
 
@@ -34,29 +48,41 @@ function titleClickHandler(event) {
     }
     clickedLink.classList.add('active');
 
-    const articles = document.querySelectorAll('.column-center article');
+    const articles = document.querySelectorAll(optArticleSelector);
     for (const article of articles) {
         article.classList.remove('active');
     }
     targetArticle.classList.add('active');
 }
 
-/* 🔖 Generowanie tagów z chmurą wagową */
+/* 🏷️ GENEROWANIE TAGÓW I CHMURY TAGÓW */
 function generateTags() {
     const allTags = {};
-    const articles = document.querySelectorAll('.column-center article');
+    const articles = document.querySelectorAll(optArticleSelector);
 
     for (const article of articles) {
-        const tagString = article.getAttribute('data-tags');
+        const tagsWrapper = article.querySelector(optArticleTagsSelector);
+        let html = '';
+
+        const tagString = article.getAttribute(optArticleTagAttribute);
         const tags = tagString.split(',');
 
         for (const tag of tags) {
             const trimmedTag = tag.trim();
-            allTags[trimmedTag] = (allTags[trimmedTag] || 0) + 1;
+            const linkHTML = `<li><a href="#tag-${trimmedTag}">${trimmedTag}</a></li>`;
+            html += linkHTML;
+
+            if (!allTags[trimmedTag]) {
+                allTags[trimmedTag] = 1;
+            } else {
+                allTags[trimmedTag]++;
+            }
         }
+
+        tagsWrapper.innerHTML = html;
     }
 
-    const tagList = document.querySelector('.tags');
+    const tagList = document.querySelector(optTagsListSelector);
     tagList.innerHTML = '';
 
     const counts = Object.values(allTags);
@@ -75,7 +101,7 @@ function generateTags() {
     }
 }
 
-/* 📎 Obsługa kliknięcia tagu */
+/* 🔘 OBSŁUGA KLIKNIĘCIA W TAG */
 function tagClickHandler(event) {
     event.preventDefault();
 
@@ -83,37 +109,46 @@ function tagClickHandler(event) {
     const href = clickedTag.getAttribute('href');
     const tag = href.replace('#tag-', '');
 
-    const articles = document.querySelectorAll('.column-center article');
-
+    const articles = document.querySelectorAll(optArticleSelector);
     for (const article of articles) {
         article.classList.remove('active');
 
-        const tags = article.getAttribute('data-tags').split(',');
-        if (tags.includes(tag)) {
+        const tags = article.getAttribute(optArticleTagAttribute).split(',');
+        const trimmedTags = tags.map(tag => tag.trim());
+
+        if (trimmedTags.includes(tag)) {
             article.classList.add('active');
         }
     }
 }
 
-/* 📎 Podpinanie eventów do tagów */
+/* 📎 PODPINANIE EVENTÓW DO TAGÓW */
 function addClickListenersToTags() {
-    const tagLinks = document.querySelectorAll('.tags a');
+    const tagLinks = document.querySelectorAll(`${optTagsListSelector} a`);
     for (const tagLink of tagLinks) {
         tagLink.addEventListener('click', tagClickHandler);
     }
 }
 
-/* 👤 Generowanie listy autorów */
+/* 📎 PODPINANIE EVENTÓW DO TAGÓW W ARTYKUŁACH */
+function addClickListenersToArticleTags() {
+    const tagLinks = document.querySelectorAll(`${optArticleTagsSelector} a`);
+    for (const tagLink of tagLinks) {
+        tagLink.addEventListener('click', tagClickHandler);
+    }
+}
+
+/* 👤 GENEROWANIE LISTY AUTORÓW */
 function generateAuthors() {
     const allAuthors = new Set();
-    const articles = document.querySelectorAll('.column-center article');
+    const articles = document.querySelectorAll(optArticleSelector);
 
     for (const article of articles) {
-        const author = article.getAttribute('data-author');
+        const author = article.getAttribute(optArticleAuthorAttribute);
         allAuthors.add(author);
     }
 
-    const authorList = document.querySelector('.authors');
+    const authorList = document.querySelector(optAuthorsListSelector);
     authorList.innerHTML = '';
 
     for (const author of allAuthors) {
@@ -122,7 +157,7 @@ function generateAuthors() {
     }
 }
 
-/* 📎 Obsługa kliknięcia autora */
+/* 🔘 OBSŁUGA KLIKNIĘCIA W AUTORA */
 function authorClickHandler(event) {
     event.preventDefault();
 
@@ -130,29 +165,29 @@ function authorClickHandler(event) {
     const href = clickedAuthor.getAttribute('href');
     const author = href.replace('#author-', '');
 
-    const articles = document.querySelectorAll('.column-center article');
-
+    const articles = document.querySelectorAll(optArticleSelector);
     for (const article of articles) {
         article.classList.remove('active');
 
-        const articleAuthor = article.getAttribute('data-author');
+        const articleAuthor = article.getAttribute(optArticleAuthorAttribute);
         if (articleAuthor === author) {
             article.classList.add('active');
         }
     }
 }
 
-/* 📎 Podpinanie eventów do autorów */
+/* 📎 PODPINANIE EVENTÓW DO AUTORÓW */
 function addClickListenersToAuthors() {
-    const authorLinks = document.querySelectorAll('.authors a');
+    const authorLinks = document.querySelectorAll(`${optAuthorsListSelector} a`);
     for (const authorLink of authorLinks) {
         authorLink.addEventListener('click', authorClickHandler);
     }
 }
 
-/* 🚀 Uruchomienie wszystkiego */
+/* 🚀 START – uruchomienie wszystkiego */
 generateTitleLinks();
 generateTags();
+addClickListenersToArticleTags();
 addClickListenersToTags();
 generateAuthors();
 addClickListenersToAuthors();
