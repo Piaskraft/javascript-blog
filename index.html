@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>CodeMind – Uczę się programować</title>
-    <link rel="stylesheet" href="css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -25,75 +25,99 @@
         <section class="column-center">
             <h2 class="visually-hidden">Zawartość artykułu</h2>
 
-            <!-- ✅ Artykuły muszą mieć klasę .post -->
-            <article id="article-1" class="post" data-tags="javascript,html" data-author="Agnieszka">
-                <!-- ✅ Tytuł musi mieć klasę .post-title -->
+            <!-- Artykuł 1 -->
+            <article id="article-1" class="post active" data-tags="javascript, html" data-author="Agnieszka">
                 <h3 class="post-title">Jak zacząć z JavaScript?</h3>
                 <p class="short">Poznaj podstawy JavaScript i napisz swój pierwszy skrypt!</p>
+
+                <div class="post-author">
+                    <p><strong>Autor:</strong></p>
+                    <ul class="list list-horizontal"></ul>
+                </div>
+
                 <div class="content">
                     <p>JavaScript to język, który pozwala tworzyć dynamiczne strony. Używa się go m.in. do reagowania na
                         kliknięcia, animacji, komunikacji z serwerem i wielu innych.</p>
                 </div>
 
-                <!-- ✅ Tu będą tagi dla tego artykułu -->
                 <div class="post-tags">
-                    <ul class="list"></ul>
+                    <p><strong>Tags:</strong></p>
+                    <ul class="list list-horizontal"></ul>
                 </div>
             </article>
 
-            <article id="article-2" class="post" data-tags="css,projekt" data-author="Agnieszka">
+            <!-- Artykuł 2 -->
+            <article id="article-2" class="post" data-tags="css, projekt, layout" data-author="Agnieszka">
                 <h3 class="post-title">Pierwszy projekt w CSS</h3>
                 <p class="short">Stylujemy stronę przy pomocy własnych klas i zmiennych!</p>
-                <div class="content">
-                    <ul class="post-tags list"></ul>
 
-                    <p>CSS to język stylów. Dzięki niemu możesz sprawić, że Twoja strona będzie wyglądać świetnie.
-                        Kolory, marginesy, układ – wszystko jest w Twoich rękach!</p>
+                <div class="post-author">
+                    <p><strong>Autor:</strong></p>
+                    <ul class="list list-horizontal"></ul>
+                </div>
+
+                <div class="content">
+                    <p>CSS to język stylów. Dzięki niemu Twoja strona będzie wyglądać świetnie. Kolory, marginesy, układ
+                        – wszystko
+                        jest w Twoich rękach!</p>
                 </div>
 
                 <div class="post-tags">
-                    <ul class="list"></ul>
+                    <p><strong>Tags:</strong></p>
+                    <ul class="list list-horizontal"></ul>
                 </div>
             </article>
         </section>
 
         <aside class="column-right" aria-label="Tagi i autorzy">
             <h2>Tagi</h2>
-            <ul class="tags"></ul>
+            <ul class="tags list"></ul>
 
             <h2>Autorzy</h2>
-            <ul class="authors"></ul>
+            <ul class="authors list"></ul>
         </aside>
     </main>
 
     <footer>
         <p>&copy; 2025 <strong>CodeMind</strong>. Blog edukacyjny Agnieszki.</p>
     </footer>
-    <script id="template-article-link" type="text/x-handlebars-template">
-  <li><a href="#{{ id }}"><span>{{ title }}</span></a></li>
-</script>
-    <script id="template-article-author" type="text/x-handlebars-template">
-  <a href="#author-{{ author }}">{{ author }}</a>
-</script>
 
-    <script id="template-tag-cloud-link" type="text/x-handlebars-template">
-  {{#each tags}}
-    <li><a href="#tag-{{ tag }}" class="{{ className }}">{{ tag }}</a></li>
-  {{/each}}
-</script>
+    <!-- Handlebars templates -->
+    <script id="template-article-link" type="text/x-handlebars-template">
+    <li><a href="#{{id}}"><span>{{title}}</span></a></li>
+  </script>
 
     <script id="template-article-tag" type="text/x-handlebars-template">
-  <li><a href="#tag-{{tag}}">{{tag}}</a></li>
-</script>
+    <li><a href="#tag-{{tag}}">{{tag}}</a></li>
+  </script>
+
+    <script id="template-article-author" type="text/x-handlebars-template">
+    <li><a href="#author-{{author}}">{{author}}</a></li>
+  </script>
+
+    <script id="template-tag-cloud-link" type="text/x-handlebars-template">
+    {{#each tags}}
+      <li>
+        <a href="#tag-{{tag}}" class="{{className}}">
+          {{tag}} ({{count}})
+        </a>
+      </li>
+    {{/each}}
+  </script>
+
     <script id="template-author-cloud-link" type="text/x-handlebars-template">
-  {{#each authors}}
-    <li><a href="#author-{{author}}">{{author}} ({{count}})</a></li>
-  {{/each}}
-</script>
+    {{#each authors}}
+      <li>
+        <a href="#author-{{author}}">
+          {{author}} ({{count}})
+        </a>
+      </li>
+    {{/each}}
+  </script>
 
-
+    <!-- Ładowanie Handlebars -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
-
+    <!-- Twój główny skrypt -->
     <script src="js/script.js"></script>
 </body>
 
