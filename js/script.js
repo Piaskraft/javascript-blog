@@ -81,9 +81,13 @@ function generateTags() {
 
     tagsWrapper.innerHTML = html;
   }
-
   const tagList = document.querySelector(optTagsListSelector);
-  tagList.innerHTML = '';
+
+  let allTagsHTML = '';
+
+
+  tagList.innerHTML = allTagsHTML;
+
 
   const counts = Object.values(allTags);
   const min = Math.min(...counts);
@@ -140,22 +144,29 @@ function addClickListenersToArticleTags() {
 
 /* 👤 GENEROWANIE LISTY AUTORÓW */
 function generateAuthors() {
-  const allAuthors = new Set();
+  const allAuthors = {};
   const articles = document.querySelectorAll(optArticleSelector);
 
   for (const article of articles) {
     const author = article.getAttribute(optArticleAuthorAttribute);
-    allAuthors.add(author);
+
+    if (!allAuthors[author]) {
+      allAuthors[author] = 1;
+    } else {
+      allAuthors[author]++;
+    }
   }
 
   const authorList = document.querySelector(optAuthorsListSelector);
-  authorList.innerHTML = '';
+  let allAuthorsHTML = '';
 
-  for (const author of allAuthors) {
-    const authorHTML = `<li><a href="#author-${author}">${author}</a></li>`;
-    authorList.innerHTML += authorHTML;
+  for (const author in allAuthors) {
+    allAuthorsHTML += `<li><a href="#author-${author}">${author} (${allAuthors[author]})</a></li>`;
   }
+
+  authorList.innerHTML = allAuthorsHTML;
 }
+
 
 /* 🔘 OBSŁUGA KLIKNIĘCIA W AUTORA */
 function authorClickHandler(event) {
