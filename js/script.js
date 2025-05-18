@@ -184,6 +184,9 @@ function addClickListenersToAuthors() {
   }
 }
 
+
+
+
 /* 🚀 START – uruchomienie wszystkiego */
 generateTitleLinks();
 generateTags();
