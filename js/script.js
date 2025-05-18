@@ -1,6 +1,19 @@
 'use strict';
 
 /* 🔧 Ustawienia konfiguracyjne */
+const templates = {
+  articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
+  articleTag: Handlebars.compile(document.querySelector('#template-article-tag').innerHTML),
+  articleAuthor: Handlebars.compile(document.querySelector('#template-article-author').innerHTML),
+  tagCloudLink: Handlebars.compile(document.querySelector('#template-tag-cloud-link').innerHTML),
+  authorCloudLink: Handlebars.compile(
+  document.querySelector('#template-author-cloud-link').innerHTML
+)
+
+
+
+};
+
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
@@ -22,7 +35,9 @@ function generateTitleLinks() {
     const articleId = article.getAttribute('id');
     const articleTitle = article.querySelector(optTitleSelector).innerText;
 
-    const linkHTML = `<li><a href="#${articleId}">${articleTitle}</a></li>`;
+    const linkHTMLData = { id: articleId, title: articleTitle };
+    const linkHTML = templates.articleLink(linkHTMLData);
+
     html += linkHTML;
   }
 
@@ -69,8 +84,10 @@ function generateTags() {
 
     for (const tag of tags) {
       const trimmedTag = tag.trim();
-      const linkHTML = `<li><a href="#tag-${trimmedTag}">${trimmedTag}</a></li>`;
+      const tagData = { tag: trimmedTag };
+      const linkHTML = templates.articleTag(tagData);
       html += linkHTML;
+
 
       if (!allTags[trimmedTag]) {
         allTags[trimmedTag] = 1;
@@ -83,10 +100,19 @@ function generateTags() {
   }
   const tagList = document.querySelector(optTagsListSelector);
 
-  let allTagsHTML = '';
+    const allTagsData = { tags: [] };
+    for (const tag in allTags) {
+  allTagsData.tags.push({
+    tag: tag,
+    count: allTags[tag],
+    className: calculateTagClass(allTags[tag])
+  });
+}
 
 
-  tagList.innerHTML = allTagsHTML;
+
+ tagList.innerHTML = templates.tagCloudLink(allTagsData);
+
 
 
   const counts = Object.values(allTags);
@@ -98,11 +124,7 @@ function generateTags() {
     return `tag-size-${classNumber}`;
   }
 
-  for (const tag in allTags) {
-    const tagClass = calculateTagClass(allTags[tag]);
-    const tagHTML = `<li><a href="#tag-${tag}" class="${tagClass}">${tag}</a></li>`;
-    tagList.innerHTML += tagHTML;
-  }
+  
 }
 
 /* 🔘 OBSŁUGA KLIKNIĘCIA W TAG */
@@ -158,13 +180,16 @@ function generateAuthors() {
   }
 
   const authorList = document.querySelector(optAuthorsListSelector);
-  let allAuthorsHTML = '';
+  const allAuthorsData = { authors: [] };
 
   for (const author in allAuthors) {
-    allAuthorsHTML += `<li><a href="#author-${author}">${author} (${allAuthors[author]})</a></li>`;
+    allAuthorsData.authors.push({
+      author: author,
+      count: allAuthors[author],
+    });
   }
 
-  authorList.innerHTML = allAuthorsHTML;
+  authorList.innerHTML = templates.authorCloudLink(allAuthorsData);
 }
 
 
